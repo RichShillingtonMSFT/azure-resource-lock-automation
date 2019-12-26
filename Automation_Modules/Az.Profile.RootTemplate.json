@@ -1,0 +1,66 @@
+{
+  "$schema": "http://schemas.microsoft.org/azure/deploymentTemplate?api-version=2015-01-01#",
+  "contentVersion": "1.0",
+  "parameters": {
+    "New or existing Automation account": {
+      "type": "string",
+      "allowedValues": [
+        "New",
+        "Existing"
+      ],
+      "metadata": {
+        "description": "Select whether you want to create a new Automation account or use an existing account. WARNING: if you select NEW but use an Automation account name that already exists in your subscription, you will not be notified that your account is being updated. The pricing tier for the account will be set to free and any tags on the account will be erased."
+      },
+      "defaultvalue":"Existing"
+    },
+    "automationAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The module will be imported to this Automation account. If you want to import your module to an existing account, make sure the resource group matches and you have entered the correct name. The account name must be between 6 to 50 characters, and can contain only letters, numbers, and hyphens."
+      }
+    },
+    "automationAccountLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The location to deploy the Automation account in. If you select an existing account, the location field will not be used."
+      }
+    }
+  },
+  "variables": {
+    "templatelink": "[concat('https://devopsgallerystorage.blob.core.windows.net/armtemplates/Az.Profile/0.7.0/', parameters('New or existing Automation account'), 'AccountTemplate.json')]",
+    "Level0": {
+      "Modules": [
+        {
+          "Name": "Az.Profile",
+          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/az.profile.0.7.0.nupkg"
+        }
+      ]
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-01-01",
+      "name": "nestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "incremental",
+        "templateLink": {
+          "uri": "[variables('templatelink')]",
+          "contentVersion": "1.0"
+        },
+        "parameters": {
+          "accountName": {
+            "value": "[parameters('automationAccountName')]"
+          },
+          "accountLocation": {
+            "value": "[parameters('automationAccountLocation')]"
+          },
+          "Level0": {
+            "value": "[variables('Level0')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}

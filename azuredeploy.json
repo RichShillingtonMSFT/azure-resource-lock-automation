@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "2.0.0.0",
+    "parameters": {
+        "resourceTags": {
+            "type": "object",
+            "metadata": {
+              "description": "Tags."
+            }
+        },
+        "automationAccountName": {
+            "type": "string"
+        },
+        "automationAccountLocation": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2015-01-01-preview",
+            "name": "[parameters('automationAccountName')]",
+            "location": "[parameters('automationAccountLocation')]",
+            "dependsOn": [],
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "sku": {
+                    "name": "Basic"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "automationAccountName": {
+          "type": "string",
+          "value": "[parameters('automationAccountName')]"
+        },
+        "automationAccountResourceGroupName":{
+            "type": "string",
+            "value": "[resourceGroup().name]"
+        },
+        "automationAccountLocation":{
+            "type": "string",
+            "value": "[parameters('automationAccountLocation')]"
+        }
+    }
+}
