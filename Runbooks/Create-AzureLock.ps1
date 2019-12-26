@@ -85,7 +85,7 @@ try
 catch
 {
     Write-Error $_
-    $_ | FL -force
+    $_ | Format-List -force
 }
 
 # Remove Invalid Charachters from Lock Name

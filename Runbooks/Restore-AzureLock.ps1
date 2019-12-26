@@ -66,7 +66,7 @@ try
 catch
 {
     Write-Error $_
-    $_ | FL -force
+    $_ | Format-List -force
 }
 
 # Set the Current Working Subscription
