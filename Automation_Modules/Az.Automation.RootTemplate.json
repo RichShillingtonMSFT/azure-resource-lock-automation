@@ -27,12 +27,12 @@
     }
   },
   "variables": {
-    "templatelink": "[concat('https://devopsgallerystorage.blob.core.windows.net/armtemplates/Az.Automation/1.3.2/', parameters('New or existing Automation account'), 'AccountTemplate.json')]",
+    "templatelink": "[concat('https://devopsgallerystorage.blob.core.windows.net/armtemplates/Az.Automation/1.3.6/', parameters('New or existing Automation account'), 'AccountTemplate.json')]",
     "Level1": {
       "Modules": [
         {
           "Name": "Az.Accounts",
-          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/az.accounts.1.6.2.nupkg"
+          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/az.accounts.1.7.5.nupkg"
         }
       ]
     },
@@ -40,14 +40,14 @@
       "Modules": [
         {
           "Name": "Az.Automation",
-          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/az.automation.1.3.2.nupkg"
+          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/az.automation.1.3.6.nupkg"
         }
       ]
     }
   },
   "resources": [
     {
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "name": "nestedTemplate",
       "type": "Microsoft.Resources/deployments",
       "properties": {

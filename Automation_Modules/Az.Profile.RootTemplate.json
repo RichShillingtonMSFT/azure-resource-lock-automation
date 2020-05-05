@@ -39,7 +39,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "name": "nestedTemplate",
       "type": "Microsoft.Resources/deployments",
       "properties": {

@@ -18,7 +18,7 @@
     "resources": [
         {
             "type": "Microsoft.Automation/automationAccounts",
-            "apiVersion": "2015-01-01-preview",
+            "apiVersion": "[providers('Microsoft.Automation','automationAccounts').apiVersions[0]]",
             "name": "[parameters('automationAccountName')]",
             "location": "[parameters('automationAccountLocation')]",
             "dependsOn": [],

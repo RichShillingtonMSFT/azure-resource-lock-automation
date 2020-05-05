@@ -27,19 +27,19 @@
     }
   },
   "variables": {
-    "templatelink": "[concat('https://devopsgallerystorage.blob.core.windows.net/armtemplates/AzTable/2.0.2/', parameters('New or existing Automation account'), 'AccountTemplate.json')]",
+    "templatelink": "[concat('https://devopsgallerystorage.blob.core.windows.net/armtemplates/AzTable/2.0.3/', parameters('New or existing Automation account'), 'AccountTemplate.json')]",
     "Level0": {
       "Modules": [
         {
           "Name": "AzTable",
-          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/aztable.2.0.2.nupkg"
+          "Uri": "https://devopsgallerystorage.blob.core.windows.net:443/packages/aztable.2.0.3.nupkg"
         }
       ]
     }
   },
   "resources": [
     {
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "name": "nestedTemplate",
       "type": "Microsoft.Resources/deployments",
       "properties": {
