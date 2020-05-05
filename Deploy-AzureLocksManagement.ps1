@@ -1,24 +1,65 @@
-﻿
+﻿<#
+.SYNOPSIS
+    Script to deploy Resource Lock Management using Azure Automation
+
+.DESCRIPTION
+    This script will deploy Resource Lock Management using Azure Automation.
+    It will create an Automation account, a runas account.
+    It will create a Key Vault if the one specified does not exist.
+    It will create a custom RBAC role to allow for management of resource locks on the entire subscription
+    as well as creates and publishes all the nessecary runbooks and variables.
+
+.PARAMETER AutomationAccountName
+    Name for the new Automation Account.
+    Example: "Locks-Automation-Acct"
+
+.PARAMETER AutomationAccountResourceGroupName
+    Name of the Resource Group where this will be deployed.
+    Example: "Locks-Automation-RG"
+
+.PARAMETER KeyVaultName
+    Name of the Key Vault where the Certificate will be created.
+    Example: "Secrets-KV"
+
+.PARAMETER ScopeSubscriptionID
+    Enter Subscription ID where the custom RBAC should be scoped. 
+    Example: '7cd89fb7-c577-4bb8-ac33-790b9580da6f'
+
+.PARAMETER RBACStoreSubscriptionID
+    Enter the Subscription ID where Custom RBAC Roles should be stored
+    Example: 'dee1e1fb-a70e-47bd-95cd-4394e718b1d7'
+
+.EXAMPLE
+    .\Deploy-AzureLocksManagement.ps1 -AutomationAccountName 'Locks-Automation-Acct' `
+        -AutomationAccountResourceGroupName 'Locks-Automation-RG' `
+        -KeyVaultName 'Automation-KV' `
+        -ScopeSubscriptionID '7cd89fb7-c577-4bb8-ac33-790b9580da6f' `
+        -RBACStoreSubscriptionID '7cd89fb7-c577-4bb8-ac33-790b9580da6f'
+#>
 [CmdletBinding()]
 Param
 (
-    [String]$AutomationAccountName = 'Locks-Automation-Acct',
+    # Name for the new Automation Account.
+    # Example: "Locks-Automation-Acct"
+    [parameter(Mandatory=$true,HelpMessage='Name for the new Automation Account. Example: Locks-Automation-Acct')]
+    [String]$AutomationAccountName,
 
-    [String]$AutomationAccountResourceGroupName = 'Locks-Automation-RG',
-
-    [String]$Location = 'eastus',
+    # Name of the Resource Group where this will be deployed.
+    # Example: "Locks-Automation-RG"
+    [parameter(Mandatory=$true,HelpMessage='Name of the Resource Group where this will be deployed. Example: Locks-Automation-RG')]
+    [String]$AutomationAccountResourceGroupName,
 
     # Name of the Key Vault where the Certificate will be created.
-    # Example: "kv-vm-secrets"
-    [parameter(Mandatory=$false,HelpMessage='Name of the Key Vault where the Certificate will be created. Example: kv-vm-secrets')]
-    [String]$KeyVaultName = 'Automation-KV',
+    # Example: "Secrets-KV"
+    [parameter(Mandatory=$true,HelpMessage='Name of the Key Vault where the Certificate will be created. Example: Secrets-KV')]
+    [String]$KeyVaultName,
 
-    #Enter Subscription ID where the Policy Assignment should be scoped. 
-    #Example: '7cd89fb7-c577-4bb8-ac33-790b9580da6f'
+    # Enter Subscription ID where the custom RBAC should be scoped. 
+    # Example: '7cd89fb7-c577-4bb8-ac33-790b9580da6f'
     [parameter(Mandatory=$false,HelpMessage='Example: 7cd89fb7-c577-4bb8-ac33-790b9580da6f')]
     [String]$ScopeSubscriptionID,
 
-    # Enter the Subscription ID where Custom RBAC Roles and Policies should be stored
+    # Enter the Subscription ID where Custom RBAC Roles should be stored
     # Example: 'dee1e1fb-a70e-47bd-95cd-4394e718b1d7'
     [parameter(Mandatory=$false,HelpMessage='Example: dee1e1fb-a70e-47bd-95cd-4394e718b1d7')]
     [String]$RBACStoreSubscriptionID
