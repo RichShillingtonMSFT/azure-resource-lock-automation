@@ -643,12 +643,12 @@ param
 (
     # Provide Resource ID which contains the lock
     # Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault'
-    [parameter(Mandatory=$false,HelpMessage='Provide Resource ID which contains the lock. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
+    [parameter(Mandatory=$true,HelpMessage='Provide Resource ID which contains the lock. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
     [String]$LockedResourceID,
 
     # Provide the Name of the lock to remove
     # Example: "Key Vault No Delete Lock"
-    [parameter(Mandatory=$false,HelpMessage='Provide the Name of the lock to remove. Example: Key Vault No Delete Lock')]
+    [parameter(Mandatory=$true,HelpMessage='Provide the Name of the lock to remove. Example: Key Vault No Delete Lock')]
     [String]$LockName,
 
     # Provide Target Subscription ID
@@ -788,22 +788,22 @@ param
 (
     # Provide Resource ID where the lock should be applied
     # Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault'
-    [parameter(Mandatory=$false,HelpMessage='Provide Resource ID where the lock should be applied. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
+    [parameter(Mandatory=$true,HelpMessage='Provide Resource ID where the lock should be applied. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
     [String]$LockedResourceID,
 
     # Provide a Name for the new lock
     # Example: "KeyVault01 No Delete Lock"
-    [parameter(Mandatory=$false,HelpMessage='Provide a Name for the new lock. Example: KeyVault01 No Delete Lock')]
+    [parameter(Mandatory=$true,HelpMessage='Provide a Name for the new lock. Example: KeyVault01 No Delete Lock')]
     [String]$LockName,
 
     # Provide a description for the new lock
     # Example: "Lock to Protect Production Key Vault from Deletion"
-    [parameter(Mandatory=$false,HelpMessage='Provide a description for the new lock. Example: Lock to Protect Production Key Vault from Deletion')]
+    [parameter(Mandatory=$true,HelpMessage='Provide a description for the new lock. Example: Lock to Protect Production Key Vault from Deletion')]
     [String]$LockDescription,
 
     # Provide the lock level setting.
     # Example: ReadOnly or CanNotDelete
-    [parameter(Mandatory=$false,HelpMessage='Provide the lock level setting. Example: ReadOnly or CanNotDelete')]
+    [parameter(Mandatory=$true,HelpMessage='Provide the lock level setting. Example: ReadOnly or CanNotDelete')]
     [ValidateSet('CanNotDelete','ReadOnly')]
     [String]$LockLevel,
 
@@ -1011,17 +1011,17 @@ param
 (
     # Provide Resource ID which contains the lock
     # Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault'
-    [parameter(Mandatory=$false,HelpMessage='Provide Resource ID which contains the lock. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
+    [parameter(Mandatory=$true,HelpMessage='Provide Resource ID which contains the lock. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
     [String]$LockedResourceID,
 
     # Provide the Name of the lock to remove
     # Example: "Key Vault No Delete Lock"
-    [parameter(Mandatory=$false,HelpMessage='Provide the Name of the lock to remove. Example: Key Vault No Delete Lock')]
+    [parameter(Mandatory=$true,HelpMessage='Provide the Name of the lock to remove. Example: Key Vault No Delete Lock')]
     [String]$LockName,
     
     # Provide the length of time in minutes before lock is re-enabled
     # Example: "60"
-    [parameter(Mandatory=$false,HelpMessage='Provide the length of time in minutes before lock is re-enabled. Example: 60')]
+    [parameter(Mandatory=$true,HelpMessage='Provide the length of time in minutes before lock is re-enabled. Example: 60')]
     [ValidateRange(20,1440)]
     [Int]$RemovalTimeInMinutes,
 
@@ -1181,12 +1181,12 @@ param
 (
     # Provide Resource ID which contained the lock
     # Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault'
-    [parameter(Mandatory=$false,HelpMessage='Provide Resource ID which contained the lock. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
+    [parameter(Mandatory=$true,HelpMessage='Provide Resource ID which contained the lock. Example: /subscriptions/e980dd22-04ac-4f49-a186-2218c1787d1b/resourceGroups/Test-RG/providers/Microsoft.KeyVault/vaults/MyVault')]
     [String]$LockedResourceID,
 
     # Provide the Name of the lock to restore
     # Example: "Key Vault No Delete Lock"
-    [parameter(Mandatory=$false,HelpMessage='Provide the Name of the lock to restore. Example: Key Vault No Delete Lock')]
+    [parameter(Mandatory=$true,HelpMessage='Provide the Name of the lock to restore. Example: Key Vault No Delete Lock')]
     [String]$LockName,
 
     # Provide Target Subscription ID
@@ -1317,10 +1317,10 @@ $RunbookFilePath = New-Item -Path "$env:TEMP\Get-DeletedLocks.ps1" -ItemType Fil
 $RunbookFileContent = @'
 <#
 .SYNOPSIS
-    This Runbook is used to display deleted locks.
+    This Runbook is used to generate a report of deleted locks.
 
 .DESCRIPTION
-    This Runbook is used to display deleted locks.
+    This Runbook is used to generate a report of deleted locks.
     Locks marked as deleted will appear in the Runbook Output
 
 .PARAMETER SubscriptionID
@@ -1403,7 +1403,10 @@ if ($ResourceLocks.Count -ge '1')
     $DataTable = New-Object System.Data.DataTable
     $DataTable.Columns.Add("Name","string") | Out-Null
     $DataTable.Columns.Add("Description","string") | Out-Null
+    $DataTable.Columns.Add("LockId","string") | Out-Null
     $DataTable.Columns.Add("LockLevel","string") | Out-Null
+    $DataTable.Columns.Add("ResourceGroupName","string") | Out-Null
+    $DataTable.Columns.Add("ResourceType","string") | Out-Null
     $DataTable.Columns.Add("ResourceId","string") | Out-Null
     $DataTable.Columns.Add("DeletedOn","string") | Out-Null
 
@@ -1418,8 +1421,11 @@ if ($ResourceLocks.Count -ge '1')
         $NewRow.Name = $($ResourceLock.Name)
         $NewRow.Description = $($ResourceLock.Notes)
         $NewRow.LockLevel = $($ResourceLock.Level)
+        $NewRow.LockId = $($ResourceLock.LockId)
         $NewRow.ResourceId = $($ResourceLock.ResourceId)
         $NewRow.DeletedOn = ($ResourceLock.DeletedOn)
+        $NewRow.ResourceGroupName = ($ResourceLock.ResourceGroupName)
+        $NewRow.ResourceType = ($ResourceLock.ResourceType)
         $DataTable.Rows.Add($NewRow)
         $DeletedLocksCount ++
     }
@@ -1453,6 +1459,173 @@ if ($ResourceLocks.Count -ge '1')
 else
 {
     Write-Verbose 'No deleted locks found'
+}
+'@
+Add-Content -Path $RunbookFilePath -Value $RunbookFileContent
+(Get-Content $RunbookFilePath.FullName).replace('[Environment]', $Environment) | Set-Content $RunbookFilePath.FullName
+try
+{
+    Write-Output "Importing Runbook $($RunbookFilePath.BaseName)"
+    Import-AzAutomationRunbook -ResourceGroupName $AutomationAccountResourceGroupName -AutomationAccountName $AutomationAccountName -Path $RunbookFilePath.FullName -Type $RunbookType -Verbose -ErrorAction 'Stop'
+    Publish-AzAutomationRunbook -Name $($RunbookFilePath.BaseName) -AutomationAccountName $AutomationAccountName -ResourceGroupName $AutomationAccountResourceGroupName -Verbose -ErrorAction 'Stop'
+}
+catch 
+{
+    Write-Warning $_
+    break
+}
+#endregion
+
+#region Add Get-AllLocks.ps1 Runbook
+$RunbookType = 'PowerShell'
+$RunbookFilePath = New-Item -Path "$env:TEMP\Get-AllLocks.ps1" -ItemType File -Force
+$RunbookFileContent = @'
+<#
+.SYNOPSIS
+    This Runbook is used to get a list of Locks.
+
+.DESCRIPTION
+    This Runbook is used to get a list of Locks.
+    All Locks will appear in the report.
+    A download link will be provided in the output.
+
+.PARAMETER SubscriptionID
+    Provide Target Subscription ID
+    Example: "e980dd22-04ac-4f49-a186-2218c1787d1b"
+
+.EXAMPLE
+    ./Get-AllLocks.ps1
+#>
+[CmdletBinding()]
+param
+(
+    # Provide Target Subscription ID
+    # Example: "e980dd22-04ac-4f49-a186-2218c1787d1b"
+    [parameter(Mandatory=$false,HelpMessage='Example: e980dd22-04ac-4f49-a186-2218c1787d1b')]
+    [String]$SubscriptionID
+)
+
+# Connect to Azure
+try
+{
+    # Get RunAsConnection
+    $RunAsConnection = Get-AutomationConnection -Name 'AzureRunAsConnection'
+
+    Connect-AzAccount -ServicePrincipal `
+        -Tenant $RunAsConnection.TenantId `
+        -ApplicationId $RunAsConnection.ApplicationId `
+        -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
+        -Environment '[Environment]' `
+        -ErrorAction Stop
+
+    # Get Subscription Id if not provided
+    if (!$SubscriptionId)
+    {
+        $SubscriptionId = $RunAsConnection.SubscriptionId
+    }
+}
+catch
+{
+    Write-Error $_
+    $_ | FL -force
+}
+
+# Set the Current Working Subscription
+$Subscription = Get-AzSubscription -SubscriptionId $SubscriptionId
+Set-AzContext $Subscription
+
+#region Get Automation Variables
+try
+{
+    $StorageAccountName = Get-AutomationVariable -Name 'StorageAccountName'
+    $StorageAccountResourceGroupName = Get-AutomationVariable -Name 'StorageAccountResourceGroupName'
+    $StorageAccountReportsContainerName = Get-AutomationVariable -Name 'ReportsContainer'
+    $TableName = Get-AutomationVariable -Name 'LocksTableName'
+    $LocksKey = Get-AutomationVariable -Name 'LocksKey'
+}
+catch
+{
+    Write-Error $_
+    $_ | FL -force
+}
+#endregion
+
+$AutomationAccount = Get-AzAutomationAccount -ResourceGroupName $StorageAccountResourceGroupName
+Start-AzAutomationRunbook -Name 'Import-AzureLocksToTableStorage' -ResourceGroupName $AutomationAccount.ResourceGroupName -AutomationAccountName $AutomationAccount.AutomationAccountName -Wait
+
+# Get Storage Account and Storage Table Data
+$StorageAccount = Get-AzStorageAccount -Name $StorageAccountName -ResourceGroupName $StorageAccountResourceGroupName -ErrorAction Stop -Verbose
+$StorageTable = Get-AzStorageTable -Name $TableName -Context $StorageAccount.Context -ErrorAction Stop -Verbose
+$CloudTable = (Get-AzStorageTable -Name $TableName -Context $StorageAccount.Context).CloudTable
+
+# Get Locks Table Data
+$ResourceLocks = Get-AzTableRow -table $cloudTable
+
+if ($ResourceLocks.Count -ge '1')
+{
+    # Create Data Table Structure
+    Write-Verbose 'Creating DataTable Structure'
+    $DataTable = New-Object System.Data.DataTable
+    $DataTable.Columns.Add("Name","string") | Out-Null
+    $DataTable.Columns.Add("Description","string") | Out-Null
+    $DataTable.Columns.Add("LockId","string") | Out-Null
+    $DataTable.Columns.Add("LockLevel","string") | Out-Null
+    $DataTable.Columns.Add("ResourceGroupName","string") | Out-Null
+    $DataTable.Columns.Add("ResourceType","string") | Out-Null
+    $DataTable.Columns.Add("ResourceId","string") | Out-Null
+    $DataTable.Columns.Add("DeletedOn","string") | Out-Null
+
+    # Set Counter For Locks
+    [Int]$LocksCount = '0'
+
+    foreach ($ResourceLock in $ResourceLocks)
+    {
+        $ResourceLock.ResourceId = $ResourceLock.LockId.Substring(0, $ResourceLock.LockId.IndexOf('/providers/Microsoft.Authorization/locks'))
+        $ResourceLock  | Select-Object Name, Notes, Level, ResourceId, DeletedOn
+
+        $NewRow = $DataTable.NewRow() 
+        $NewRow.Name = $($ResourceLock.Name)
+        $NewRow.Description = $($ResourceLock.Notes)
+        $NewRow.LockLevel = $($ResourceLock.Level)
+        $NewRow.LockId = $($ResourceLock.LockId)
+        $NewRow.ResourceId = $($ResourceLock.ResourceId)
+        $NewRow.DeletedOn = ($ResourceLock.DeletedOn)
+        $NewRow.ResourceGroupName = ($ResourceLock.ResourceGroupName)
+        $NewRow.ResourceType = ($ResourceLock.ResourceType)
+
+        $DataTable.Rows.Add($NewRow)
+        $LocksCount ++
+    }
+
+    Write-Output "I have Found $LocksCount Locks."
+    # Export the results to CSV file
+    $CSVFileName = 'LocksReport ' + $(Get-Date -f yyyy-MM-dd) + '.csv'
+    $DataTable | Export-Csv "$ENV:Temp\$CSVFileName" -NoTypeInformation -Force
+
+    # Copy File to Azure Storage
+    Write-Verbose "Uploading Report to $StorageAccountReportsContainerName"
+    $StorageAccount = Get-AzStorageAccount -ResourceGroupName $StorageAccountResourceGroupName -Name $StorageAccountName -ErrorAction Stop
+    $Containers = Get-AzStorageContainer -Context $StorageAccount.Context
+    if ($StorageAccountReportsContainerName -notin $Containers.Name)
+    {
+        New-AzRMStorageContainer -Name $StorageAccountReportsContainerName -ResourceGroupName $StorageAccountResourceGroupName -StorageAccountName $StorageAccountName
+    }
+
+    Set-AzStorageBlobContent -BlobType 'Block' -File "$ENV:Temp\$CSVFileName" -Container $StorageAccountReportsContainerName -Blob "$CSVFileName" -Context $StorageAccount.Context -Force | Out-Null
+
+    # Make file available for download
+    Write-Verbose "Generating Download Link"
+    $StartTime = Get-Date
+    $EndTime = $startTime.AddHours(2.0)
+    $DownloadLink = New-AzStorageBlobSASToken -Context $StorageAccount.Context -Container $StorageAccountReportsContainerName -Blob $CSVFileName -Permission r -FullUri -StartTime $StartTime -ExpiryTime $EndTime -ErrorAction Stop
+
+    Write-Output "Locks Report can be downloaded until $EndTime from the link below."
+    Write-Output "$DownloadLink"
+
+}
+else
+{
+    Write-Verbose 'No Locks found'
 }
 '@
 Add-Content -Path $RunbookFilePath -Value $RunbookFileContent
